@@ -79,9 +79,9 @@ class DesktopEnv(gym.Env):
         self.require_terminal = require_terminal
 
         # Initialize emulator and controller
-        if provider_name != "docker": # Check if this is applicable to other VM providers
-            logger.info("Initializing...")
-            self._start_emulator()
+        # if provider_name != "docker": # Check if this is applicable to other VM providers
+        #     logger.info("Initializing...")
+        #     self._start_emulator()
 
         # mode: human or machine
         self.instruction = None
