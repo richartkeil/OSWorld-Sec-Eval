@@ -158,9 +158,10 @@ class DesktopEnv(gym.Env):
         # can be customized and scaled
         return {
             "screenshot": self.controller.get_screenshot(),
-            "accessibility_tree": self.controller.get_accessibility_tree() if self.require_a11y_tree else None,
-            "terminal": self.controller.get_terminal_output() if self.require_terminal else None,
-            "instruction": self.instruction
+            # "accessibility_tree": self.controller.get_accessibility_tree() if self.require_a11y_tree else None,
+            "shell_output": "",
+            "shell_exit_code": None,
+            "instruction": self.instruction,
         }
 
     @property
@@ -242,18 +243,26 @@ class DesktopEnv(gym.Env):
                 done = True
                 info = {"done": True}
 
+        used_bash_command = False
+
         if self.action_space == "computer_13":
             # the set of all possible actions defined in the action representation
             self.controller.execute_action(action)
         elif self.action_space == "pyautogui":
             if action in ['WAIT', 'FAIL', 'DONE']:
                 self.controller.execute_action(action)
+            elif 'BASH ' in action:
+                shell_output, shell_exit_code = self.controller.execute_bash_command(action)
+                used_bash_command = True
             else:
                 # the set of all possible python commands insides `pyautogui`
                 self.controller.execute_python_command(action)
 
         time.sleep(pause)
         observation = self._get_obs()
+        if used_bash_command:
+            observation["shell_output"] = shell_output
+            observation["shell_exit_code"] = shell_exit_code
 
         return observation, reward, done, info
 

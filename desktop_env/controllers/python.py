@@ -29,7 +29,7 @@ class PythonController:
             try:
                 response = requests.get(self.http_server + "/screenshot")
                 if response.status_code == 200:
-                    logger.info("Got screenshot successfully")
+                    # logger.info("Got screenshot successfully")
                     return response.content
                 else:
                     logger.error("Failed to get screenshot. Status code: %d", response.status_code)
@@ -51,7 +51,7 @@ class PythonController:
             try:
                 response: requests.Response = requests.get(self.http_server + "/accessibility")
                 if response.status_code == 200:
-                    logger.info("Got accessibility tree successfully")
+                    # logger.info("Got accessibility tree successfully")
                     return response.json()["AT"]
                 else:
                     logger.error("Failed to get accessibility tree. Status code: %d", response.status_code)
@@ -124,6 +124,38 @@ class PythonController:
                 if response.status_code == 200:
                     logger.info("Command executed successfully: %s", response.text)
                     return response.json()
+                else:
+                    logger.error("Failed to execute command. Status code: %d", response.status_code)
+                    logger.info("Retrying to execute command.")
+            except requests.exceptions.ReadTimeout:
+                break
+            except Exception as e:
+                logger.error("An error occurred while trying to execute the command: %s", e)
+                logger.info("Retrying to execute command.")
+            time.sleep(self.retry_interval)
+
+        logger.error("Failed to execute command.")
+        return None
+
+    def execute_bash_command(self, command: str) -> None:
+        """
+        Executes a bash command on the server.
+        """
+        # Remove "BASH " prefix if present
+        if command.startswith("BASH "):
+            command = command[5:]
+
+        # When using shell=True, we don't need to wrap in /bin/bash -c
+        payload = json.dumps({"command": command, "shell": True})
+
+        for _ in range(self.retry_times):
+            try:
+                response = requests.post(self.http_server + "/execute", headers={'Content-Type': 'application/json'},
+                                         data=payload, timeout=90)
+                if response.status_code == 200:
+                    logger.info("Command executed successfully: %s", response.text)
+                    output = response.json()["output"] + "\n" + response.json()["error"]
+                    return output, response.json()["returncode"]
                 else:
                     logger.error("Failed to execute command. Status code: %d", response.status_code)
                     logger.info("Retrying to execute command.")

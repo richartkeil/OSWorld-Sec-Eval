@@ -12,6 +12,8 @@ import requests
 from google.api_core.exceptions import InvalidArgument, ResourceExhausted, InternalServerError, BadRequest
 from requests.exceptions import SSLError
 
+from mm_agents.computer_use_tools import get_script_from_bash_tool, get_script_from_computer_tool
+
 
 logger = logging.getLogger("desktopenv.agent")
 
@@ -28,17 +30,39 @@ value_ns_windows = "https://accessibility.windows.example.org/ns/value"
 class_ns_windows = "https://accessibility.windows.example.org/ns/class"
 # More namespaces defined in OSWorld, please check desktop_env/server/main.py
 
+# ANTRHOPIC PROMPT
+#
+# <SYSTEM_CAPABILITY>
+# * You are utilising an Ubuntu virtual machine using aarch64 architecture with internet access.
+# * You can feel free to install Ubuntu applications with your bash tool. Use curl instead of wget.
+# * To open firefox, please just click on the firefox icon.  Note, firefox-esr is what is installed on your system.
+# * Using bash tool you can start GUI applications, but you need to set export DISPLAY=:1 and use a subshell. For example "(DISPLAY=:1 xterm &)". GUI apps run with bash tool will appear within your desktop environment, but they may take some time to appear. Take a screenshot to confirm it did.
+# * When using your bash tool with commands that are expected to output very large quantities of text, redirect into a tmp file and use str_replace_editor or `grep -n -B <lines before> -A <lines after> <query> <filename>` to confirm output.
+# * When viewing a page it can be helpful to zoom out so that you can see everything on the page.  Either that, or make sure you scroll down to see everything before deciding something isn't available.
+# * When using your computer function calls, they take a while to run and send back to you.  Where possible/feasible, try to chain multiple of these calls all into one function calls request.
+# * The current date is Wednesday, October 23, 2024.
+# </SYSTEM_CAPABILITY>
+
+# <IMPORTANT>
+# * When using Firefox, if a startup wizard appears, IGNORE IT.  Do not even click "skip this step".  Instead, click on the address bar where it says "Search or enter address", and enter the appropriate search term or URL there.
+# * If the item you are looking at is a pdf, if after taking a single screenshot of the pdf it seems that you want to read the entire document instead of trying to continue to read the pdf from your screenshots + navigation, determine the URL, use curl to download the pdf, install and use pdftotext to convert it to a text file, and then read that text file directly with your StrReplaceEditTool.
+# </IMPORTANT>
+
 system_prompt = """
 You are a highly skilled and helpful computer agent which follows user instructions and performs computer tasks.
 To achieve the users goal, you will receive a screenshot of the current desktop environment.
-You will output a short and concise analysis of what you see (or what has changed) and then lay out a short plan on what to do next.
-You then use the available tools to issue actions on what to do next.
-Afterwards, you will receive another screenshot with your action applied, and so ...
+You will output a short and concise analysis of what you see (or what has changed).
+You then use the available tools to issue actions on what to do next. You can output multiple tool calls in one response, and they will be executed in order.
+If unsure, better wait until you receive the next screenshot to confirm that your action was successful.
+After each response, you will receive another screenshot with your action applied, and so on...
 
 Besides using your tools, you can also return the following special codes:
 When you think you have to wait for some time, return ```WAIT```.
 When you think the task cannot be done, return ```FAIL```. Do not prematurely output ```FAIL```, always try your best to do the task.
 When you think the task is done, return ```DONE```.
+
+For the tool computer_20241022, DO NOT use the actions "screenshot" and "cursor_position", as you will always receive a screenshot.
+DO NOT use the tool text_editor_20241022 at all. For modifying files, use the tool bash_20241022.
 
 The computer's password is 'password', feel free to use it when you need sudo rights.
 """
@@ -89,38 +113,13 @@ def encode_image(image_content):
     return base64.b64encode(image_content).decode('utf-8')
 
 def parse_code_from_string(input_string):
-    input_string = "\n".join([line.strip() for line in input_string.split(';') if line.strip()])
-    if input_string.strip() in ['WAIT', 'DONE', 'FAIL']:
-        return [input_string.strip()]
-
-    # This regular expression will match both ```code``` and ```python code```
-    # and capture the `code` part. It uses a non-greedy match for the content inside.
-    pattern = r"```(?:\w+\s+)?(.*?)```"
-    # Find all non-overlapping matches in the string
-    matches = re.findall(pattern, input_string, re.DOTALL)
-
-    # The regex above captures the content inside the triple backticks.
-    # The `re.DOTALL` flag allows the dot `.` to match newline characters as well,
-    # so the code inside backticks can span multiple lines.
-
-    # matches now contains all the captured code snippets
-
-    codes = []
-
-    for match in matches:
-        match = match.strip()
-        commands = ['WAIT', 'DONE', 'FAIL']  # fixme: updates this part when we have more commands
-
-        if match in commands:
-            codes.append(match.strip())
-        elif match.split('\n')[-1] in commands:
-            if len(match.split('\n')) > 1:
-                codes.append("\n".join(match.split('\n')[:-1]))
-            codes.append(match.split('\n')[-1])
-        else:
-            codes.append(match)
-
-    return codes
+    if "WAIT" in input_string:
+        return ["WAIT"]
+    if "DONE" in input_string:
+        return ["DONE"]
+    if "FAIL" in input_string:
+        return ["FAIL"]
+    return []
 
 class ComputerUseAgent:
     def __init__(
@@ -201,12 +200,27 @@ class ComputerUseAgent:
                 raise ValueError("Invalid observation_type type: " + self.observation_type)  # 1}}}
 
             _screenshot = previous_obs["screenshot"]
+            _shell_output = previous_obs["shell_output"]
+            _shell_exit_code = previous_obs["shell_exit_code"]
+
+            if _shell_output:
+                messages.append({
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": f"The command terminated with exit code {_shell_exit_code}.\nThe output is:\n{_shell_output}"
+                        }
+                    ]
+                })
+
+
             messages.append({
                 "role": "user",
                 "content": [
                     {
                         "type": "text",
-                        "text": "Given the screenshot as below. What's the next step that you will do to help with the task?"
+                        "text": "Here is the next screenshot."
                     },
                     {
                         "type": "image_url",
@@ -231,11 +245,27 @@ class ComputerUseAgent:
         if self.observation_type != "screenshot":
             raise ValueError("Invalid observation_type type: " + self.observation_type)  # 1}}}
 
+        _shell_output = obs["shell_output"]
+        _shell_exit_code = obs["shell_exit_code"]
+        if _shell_exit_code is not None:
+            messages.append({
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"The command terminated with exit code {_shell_exit_code}.\nThe output is:\n{_shell_output}"
+                    }
+                ]
+            })
+            logger.info(f"Providing shell output. Exit code: {_shell_exit_code}. Output: {_shell_output}")
+        
+
         base64_image = encode_image(obs["screenshot"])
 
         self.observations.append({
             "screenshot": base64_image,
-            "accessibility_tree": None
+            "shell_output": _shell_output,
+            "shell_exit_code": _shell_exit_code
         })
 
         messages.append({
@@ -243,7 +273,7 @@ class ComputerUseAgent:
             "content": [
                 {
                     "type": "text",
-                    "text": "Given the screenshot as below. What's the next step that you will do to help with the task?"
+                    "text": "Here is the next screenshot."
                 },
                 {
                     "type": "image_url",
@@ -272,13 +302,18 @@ class ComputerUseAgent:
             logger.error("Failed to call" + self.model + ", Error: " + str(e))
             response = ""
 
-        logger.info("RESPONSE: %s", response)
+        responseText = response["content"][0]["text"]
+
+        logger.info(f"CLAUDE SAYS:\n{responseText}")
 
         try:
-            actions = self.parse_actions(response, masks)
-            self.thoughts.append(response)
+            if response["stop_reason"] == "tool_use":
+                actions = self.parse_tool_use(response)
+            else:
+                actions = self.parse_text(responseText)
+            self.thoughts.append(responseText)
         except ValueError as e:
-            print("Failed to parse action from response", e)
+            logger.error(f"Failed to parse action from response: {e}")
             actions = None
             self.thoughts.append("")
 
@@ -347,7 +382,7 @@ class ComputerUseAgent:
             claude_messages[1]['content'].insert(0, claude_system_message_item)
             claude_messages.pop(0)
 
-        logger.debug("CLAUDE MESSAGE: %s", repr(remove_image_urls(claude_messages)))
+        # logger.debug("CLAUDE MESSAGE: %s", repr(remove_image_urls(claude_messages)))
 
         headers = {
             "x-api-key": os.environ["ANTHROPIC_API_KEY"],
@@ -372,28 +407,60 @@ class ComputerUseAgent:
         )
 
         if response.status_code != 200:
-
             logger.error("Failed to call LLM: " + response.text)
             time.sleep(5)
             return ""
         else:
-            logger.info("Complete response: %s", json.dumps(response.json()))
-            return response.json()['content'][0]['text']
+            return response.json()
 
+
+    def parse_tool_use(self, response: Dict):
+        """
+        Maps Claude's tool use actions to PyAutoGUI commands.
+        
+        Args:
+            response (Dict): Response from Claude containing tool use information
             
+        Returns:
+            List[str]: List of PyAutoGUI commands to execute
+        """
+        if "content" not in response:
+            return []
+            
+        actions = []
+        try:
+            # Look for all tool invocations in the response
+            for content in response["content"]:
+                if content.get("type") != "tool_use":
+                    continue
 
-    def parse_actions(self, response: str, masks=None):
+                logger.info(f"CLAUDE WANTS TO DO:\n{json.dumps(content.get('input'))}")
 
-        if self.observation_type in ["screenshot"]:
-            # parse from the response
-            if self.action_space == "pyautogui":
-                actions = parse_code_from_string(response)
-            else:
-                raise ValueError("Invalid action space: " + self.action_space)
+                if content.get("name") == "computer":
+                    action = get_script_from_computer_tool(content)
+                elif content.get("name") == "bash":
+                    action = get_script_from_bash_tool(content)
+                else:
+                    raise ValueError(f"Unsupported tool: {content.get('name')}")
+                    
+                actions.append(action)
 
             self.actions.append(actions)
-
+            
             return actions
+            
+        except Exception as e:
+            logger.error(f"Error parsing tool use action: {str(e)}")
+            return []
+            
+
+    def parse_text(self, response: str, masks=None):
+        # parse from the response
+        actions = parse_code_from_string(response)
+
+        self.actions.append(actions)
+
+        return actions
 
     def reset(self, _logger=None):
         global logger
