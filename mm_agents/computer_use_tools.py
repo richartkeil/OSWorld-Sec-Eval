@@ -22,7 +22,7 @@ def get_script_from_computer_tool(content: dict) -> str:
             
     elif action == "type":
         text = tool_input.get("text", "")
-        return f"import pyautogui; pyautogui.write('{text}')"
+        return f"import pyautogui; pyautogui.write('{text}', interval=0.03)"
         
     elif action == "mouse_move":
         coords = tool_input.get("coordinate", [0, 0])
