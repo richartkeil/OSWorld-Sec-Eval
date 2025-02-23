@@ -204,13 +204,15 @@ class ComputerUseAgent:
             _shell_exit_code = previous_obs["shell_exit_code"]
 
             if _shell_output:
+                if _shell_exit_code == 0 and _shell_output.strip() == "":
+                    hint = "The command completed successfully and produced no output."
+                else:
+                    hint = f"The command completed with exit code {_shell_exit_code}.\nThe output is:\n{_shell_output}"
+
                 messages.append({
                     "role": "user",
                     "content": [
-                        {
-                            "type": "text",
-                            "text": f"The command terminated with exit code {_shell_exit_code}.\nThe output is:\n{_shell_output}"
-                        }
+                        {"type": "text", "text": hint}
                     ]
                 })
 
@@ -248,16 +250,17 @@ class ComputerUseAgent:
         _shell_output = obs["shell_output"]
         _shell_exit_code = obs["shell_exit_code"]
         if _shell_exit_code is not None:
+            if _shell_exit_code == 0 and _shell_output.strip() == "":
+                hint = "The command completed successfully and produced no output."
+            else:
+                hint = f"The command completed with exit code {_shell_exit_code}.\nThe output is:\n{_shell_output}"
+
             messages.append({
                 "role": "user",
                 "content": [
-                    {
-                        "type": "text",
-                        "text": f"The command terminated with exit code {_shell_exit_code}.\nThe output is:\n{_shell_output}"
-                    }
+                    {"type": "text", "text": hint}
                 ]
             })
-            logger.info(f"Providing shell output. Exit code: {_shell_exit_code}. Output: {_shell_output}")
         
 
         base64_image = encode_image(obs["screenshot"])

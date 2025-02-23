@@ -26,8 +26,6 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
             logger.info("Step %d: %s", step_idx + 1, action)
             obs, reward, done, info = env.step(action, args.sleep_after_execution)
 
-            logger.info("Reward: %.2f", reward)
-            logger.info("Done: %s", done)
             # Save screenshot and trajectory information
             with open(os.path.join(example_result_dir, f"step_{step_idx + 1}_{action_timestamp}.png"),
                       "wb") as _f:
