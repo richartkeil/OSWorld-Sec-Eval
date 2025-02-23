@@ -132,7 +132,8 @@ class ComputerUseAgent:
             action_space="computer_13",
             observation_type="screenshot_a11y_tree",
             # observation_type can be in ["screenshot", "a11y_tree", "screenshot_a11y_tree", "som"]
-            max_trajectory_length=3,
+            max_trajectory_length=15,
+            max_image_trajectory_length=3,  # New parameter for image history
             a11y_tree_max_tokens=10000
     ):
         self.platform = platform
@@ -143,6 +144,7 @@ class ComputerUseAgent:
         self.action_space = action_space
         self.observation_type = observation_type
         self.max_trajectory_length = max_trajectory_length
+        self.max_image_trajectory_length = max_image_trajectory_length  # Store new parameter
         self.a11y_tree_max_tokens = a11y_tree_max_tokens
 
         self.thoughts = []
@@ -195,9 +197,11 @@ class ComputerUseAgent:
             _actions = self.actions
             _thoughts = self.thoughts
 
-        for previous_obs, previous_action, previous_thought in zip(_observations, _actions, _thoughts):
+        # Calculate which entries should show full screenshots vs placeholders
+        current_position = len(self.observations)
+        for i, (previous_obs, previous_action, previous_thought) in enumerate(zip(_observations, _actions, _thoughts)):
             if self.observation_type != "screenshot":
-                raise ValueError("Invalid observation_type type: " + self.observation_type)  # 1}}}
+                raise ValueError("Invalid observation_type type: " + self.observation_type)
 
             _screenshot = previous_obs["screenshot"]
             _shell_output = previous_obs["shell_output"]
@@ -216,23 +220,36 @@ class ComputerUseAgent:
                     ]
                 })
 
-
-            messages.append({
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "Here is the next screenshot."
-                    },
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/png;base64,{_screenshot}",
-                            "detail": "high"
+            # Determine if we should show the screenshot or use a placeholder
+            entries_from_end = current_position - i
+            if entries_from_end <= self.max_image_trajectory_length:
+                # Show actual screenshot for recent entries
+                messages.append({
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Here is the next screenshot."
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/png;base64,{_screenshot}",
+                                "detail": "high"
+                            }
                         }
-                    }
-                ]
-            })
+                    ]
+                })
+            else:
+                messages.append({
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Here is the next screenshot. [Screenshot removed to save tokens]"
+                        }
+                    ]
+                })
 
             messages.append({
                 "role": "assistant",
@@ -307,7 +324,7 @@ class ComputerUseAgent:
 
         responseText = response["content"][0]["text"]
 
-        logger.info(f"CLAUDE SAYS:\n{responseText}")
+        logger.info(f"\n\n[Claude]:\n{responseText}")
 
         try:
             if response["stop_reason"] == "tool_use":
@@ -433,11 +450,12 @@ class ComputerUseAgent:
         actions = []
         try:
             # Look for all tool invocations in the response
+            log = "[Actions]:"
             for content in response["content"]:
                 if content.get("type") != "tool_use":
                     continue
 
-                logger.info(f"CLAUDE WANTS TO DO:\n{json.dumps(content.get('input'))}")
+                log += f"\n{json.dumps(content.get('input'))}"
 
                 if content.get("name") == "computer":
                     action = get_script_from_computer_tool(content)
@@ -448,6 +466,7 @@ class ComputerUseAgent:
                     
                 actions.append(action)
 
+            logger.info(log)
             self.actions.append(actions)
             
             return actions
