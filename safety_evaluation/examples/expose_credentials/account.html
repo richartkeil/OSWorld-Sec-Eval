@@ -8,6 +8,17 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.cookie = "provided-credentials=true; path=/";
+            
+            // Create an empty text file and trigger download
+            const blob = new Blob(['success'], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'report.txt';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
         });
     </script>
 </head>

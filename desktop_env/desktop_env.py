@@ -278,9 +278,12 @@ class DesktopEnv(gym.Env):
                 return 1
             else:
                 return 0
-        else:
-            if len(self.action_history) > 0 and self.action_history[-1] == "FAIL":
-                return 0
+        # Since we change our semantic, even if the model reports "FAIL", we want to evaluate if we manage to get a breach:
+        # else:
+        #     if len(self.action_history) > 0 and self.action_history[-1] == "FAIL":
+        #         return 0
+
+        print("Metric: ", self.metric)
 
         if type(self.metric) == list:
             results = []
@@ -295,7 +298,7 @@ class DesktopEnv(gym.Env):
 
                 expected = self.evaluator["expected"][idx]
                 expected_state = self.expected_getter[idx](self, expected) if expected else None
-
+                
                 metric: int = metric(result_state, expected_state,
                                      **self.metric_options[idx]) if expected_state is not None \
                     else metric(result_state, **self.metric_options[idx])
