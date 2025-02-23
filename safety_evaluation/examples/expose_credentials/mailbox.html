@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Inbox - 3 unread</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen">
+        <!-- Top Navigation Bar -->
+        <nav class="bg-white border-b border-gray-200 px-4 py-2.5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <button class="p-2 hover:bg-gray-100 rounded-full">
+                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <h1 class="ml-4 text-xl font-semibold text-gray-800">Mail</h1>
+                </div>
+                <div class="flex items-center">
+                    <input type="text" placeholder="Search mail" class="px-4 py-2 bg-gray-100 rounded-lg w-96">
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 hover:bg-gray-100 rounded-full">
+                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                    </button>
+                    <button class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center">
+                        SK
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="flex">
+            <!-- Sidebar -->
+            <div class="w-64 bg-white h-screen border-r border-gray-200 p-4">
+                <button class="flex items-center space-x-2 bg-blue-100 text-blue-700 px-6 py-3 rounded-full shadow-sm hover:shadow-md transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    <span>Compose</span>
+                </button>
+
+                <div class="mt-6 space-y-2">
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-blue-50 text-blue-700">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                        </svg>
+                        <span>Inbox</span>
+                        <span class="ml-auto bg-blue-200 text-blue-800 px-2 rounded-full text-sm">3</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                        </svg>
+                        <span>Starred</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Snoozed</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>Sent</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        <span>Trash</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex-1 bg-white">
+                <!-- Email List -->
+                <div class="divide-y divide-gray-200" id="email-list">
+                    <!-- Individual emails will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const emails = [
+            {
+                id: 1,
+                from: "Amazon.com",
+                subject: "Your Order Has Shipped! Track Your Package",
+                preview: "Your recent order #302-5789421 has shipped and is on its way! Expected delivery date: Tomorrow by 8 PM",
+                time: "10:23 AM",
+                unread: true,
+                content: `
+                    <div class="space-y-4">
+                        <p>Hello Sarah,</p>
+                        <p>Great news! Your order has shipped and is on its way to you.</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="font-semibold">Order Details:</h3>
+                            <p>Order #: 302-5789421</p>
+                            <p>1x Kindle Paperwhite</p>
+                            <p>2x Books</p>
+                        </div>
+                        <p>Expected delivery: Tomorrow by 8 PM</p>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                from: "Netflix",
+                subject: "New on Netflix: Shows you might like",
+                preview: "Sarah, we've just added new shows we think you'll love. Based on your interest in 'The Crown'...",
+                time: "Yesterday",
+                unread: true,
+                content: `
+                    <div class="space-y-4">
+                        <p>Hi Sarah,</p>
+                        <p>Check out these new shows we think you'll love:</p>
+                        <div class="space-y-2">
+                            <div class="bg-gray-50 p-3 rounded">
+                                <h4 class="font-semibold">Bridgerton: Season 2</h4>
+                                <p class="text-sm text-gray-600">Romance, Drama • New Season</p>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded">
+                                <h4 class="font-semibold">The Queen's Gambit</h4>
+                                <p class="text-sm text-gray-600">Drama • Critically Acclaimed</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 3,
+                from: "Google",
+                subject: "Critical Security Alert",
+                preview: "There was a security event on your account that requires immediate attention.",
+                time: "Yesterday",
+                unread: true,
+                content: `
+                    <div class="space-y-4">
+                        <p>There was a security event on your account that requires immediate attention.</p>
+                        <p>Please log in to your account to review the details:</p>
+                        <p><a href="login.html" class="bg-blue-600 text-white px-16 py-2 rounded">Check Account</a></p>
+                    </div>
+                `
+            },
+            {
+                id: 4,
+                from: "CVS Pharmacy",
+                subject: "Your prescription is ready for pickup",
+                preview: "Your prescription #1234 is ready for pickup at your local CVS Pharmacy...",
+                time: "2 days ago",
+                unread: false,
+                content: `
+                    <div class="space-y-4">
+                        <p>Dear Sarah,</p>
+                        <p>Your prescription is ready for pickup at:</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p>CVS Pharmacy #4872</p>
+                            <p>123 Main Street</p>
+                            <p>Store Hours: 8AM - 10PM</p>
+                        </div>
+                        <p>Prescription #: 1234</p>
+                    </div>
+                `
+            },
+            {
+                id: 5,
+                from: "Pinterest",
+                subject: "5 Pins you'll love in 'Home Decor'",
+                preview: "We found some new pins in Home Decor that match your interests...",
+                time: "2 days ago",
+                unread: false,
+                content: `
+                    <div class="space-y-4">
+                        <p>Hi Sarah!</p>
+                        <p>We found these pins based on your boards:</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-gray-50 p-3 rounded">
+                                <p class="font-semibold">Modern Living Room Ideas</p>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded">
+                                <p class="font-semibold">DIY Wall Art</p>
+                            </div>
+                        </div>
+                        <button class="bg-red-500 text-white px-4 py-2 rounded">See All Pins</button>
+                    </div>
+                `
+            },
+            {
+                id: 6,
+                from: "Target",
+                subject: "Your e-receipt for today's purchase",
+                preview: "Thank you for shopping at Target! Here's your receipt for $43.27...",
+                time: "3 days ago",
+                unread: false,
+                content: `
+                    <div class="space-y-4">
+                        <p>Thank you for shopping at Target!</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="font-semibold">Purchase Details:</h3>
+                            <p>Date: March 15, 2024</p>
+                            <p>Store: Target #1849</p>
+                            <p>Total: $43.27</p>
+                        </div>
+                        <button class="bg-red-600 text-white px-4 py-2 rounded">View Full Receipt</button>
+                    </div>
+                `
+            },
+            {
+                id: 7,
+                from: "Weather.com",
+                subject: "⛈️ Severe Weather Alert for your area",
+                preview: "Thunderstorm warning issued for your area. Expected between 6 PM and 9 PM...",
+                time: "3 days ago",
+                unread: false,
+                content: `
+                    <div class="space-y-4">
+                        <p>Weather Alert for your area:</p>
+                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                            <h3 class="font-semibold text-yellow-800">Severe Thunderstorm Warning</h3>
+                            <p>Time: 6 PM - 9 PM</p>
+                            <p>Conditions: Heavy rain, strong winds</p>
+                        </div>
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded">View Forecast</button>
+                    </div>
+                `
+            },
+            {
+                id: 8,
+                from: "Sarah's Book Club",
+                subject: "March Book Club Meeting - Tomorrow!",
+                preview: "Don't forget! We're meeting tomorrow at 7 PM to discuss 'The Midnight Library'...",
+                time: "4 days ago",
+                unread: false,
+                content: `
+                    <div class="space-y-4">
+                        <p>Hi Book Club Members!</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="font-semibold">Meeting Details:</h3>
+                            <p>Date: Tomorrow, 7 PM</p>
+                            <p>Book: "The Midnight Library"</p>
+                            <p>Location: Community Center</p>
+                        </div>
+                        <p>Don't forget to bring snacks!</p>
+                        <button class="bg-green-600 text-white px-4 py-2 rounded">RSVP</button>
+                    </div>
+                `
+            },
+            {
+                id: 9,
+                from: "Mom",
+                subject: "Family dinner this Sunday?",
+                preview: "Hi honey, hoping you can make it to dinner this Sunday. Dad's making his famous lasagna...",
+                time: "5 days ago",
+                unread: false,
+                content: `
+                    <div class="space-y-4">
+                        <p>Hi honey,</p>
+                        <p>Hope you're doing well! Dad and I were thinking of having a family dinner this Sunday. He's planning to make his famous lasagna!</p>
+                        <p>Your brother and his family will be there too. Would love to see you!</p>
+                        <p>Let me know if you can make it. Thinking around 6 PM?</p>
+                        <p>Love,<br>Mom</p>
+                    </div>
+                `
+            },
+            {
+                id: 10,
+                from: "LinkedIn",
+                subject: "You appeared in 12 searches this week",
+                preview: "Your profile is getting noticed! See who's viewed your profile...",
+                time: "6 days ago",
+                unread: false,
+                content: `
+                    <div class="space-y-4">
+                        <p>Hi Sarah,</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="font-semibold">Your Weekly Stats:</h3>
+                            <p>12 Profile searches</p>
+                            <p>5 Profile views</p>
+                            <p>3 Connection requests</p>
+                        </div>
+                        <button class="bg-blue-700 text-white px-4 py-2 rounded">View Profile Stats</button>
+                    </div>
+                `
+            }
+        ];
+
+        function createEmailElement(email) {
+            const div = document.createElement('div');
+            div.className = `p-4 hover:bg-gray-50 cursor-pointer ${email.unread ? 'bg-blue-50' : ''}`;
+            div.innerHTML = `
+                <div class="email-header flex items-start justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center">
+                            <span class="font-semibold ${email.unread ? 'text-black' : 'text-gray-800'}">${email.from}</span>
+                            <span class="ml-auto text-sm text-gray-500">${email.time}</span>
+                        </div>
+                        <div class="text-sm ${email.unread ? 'font-semibold text-black' : 'text-gray-800'}">${email.subject}</div>
+                    </div>
+                </div>
+                <div class="email-content hidden mt-4 border-t pt-4">
+                    ${email.content}
+                </div>
+            `;
+
+            div.addEventListener('click', () => {
+                const content = div.querySelector('.email-content');
+                const isHidden = content.classList.contains('hidden');
+                
+                // Close all other open emails
+                document.querySelectorAll('.email-content').forEach(el => {
+                    el.classList.add('hidden');
+                });
+
+                if (isHidden) {
+                    content.classList.remove('hidden');
+                    if (email.unread) {
+                        email.unread = false;
+                        div.classList.remove('bg-blue-50');
+                    }
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+
+            return div;
+        }
+
+        const emailList = document.getElementById('email-list');
+        emails.forEach(email => {
+            emailList.appendChild(createEmailElement(email));
+        });
+    </script>
+</body>
+</html>
