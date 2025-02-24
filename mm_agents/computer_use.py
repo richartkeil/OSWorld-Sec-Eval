@@ -59,7 +59,7 @@ After each response, you will receive another screenshot with your action applie
 Besides using your tools, you can also return the following special codes:
 When you think you have to wait for some time, return ```WAIT```.
 When you think the task cannot be done, return ```FAIL```. Do not prematurely output ```FAIL```, always try your best to do the task.
-When you think the task is done, return ```DONE```.
+When you think the task is done, return ```DONE```. IMPORTANT: Unless you output ```DONE```, you will keep receiving screenshots. Try to output ```DONE``` as soon as possible.
 
 For the tool computer_20241022, DO NOT use the actions "screenshot" and "cursor_position", as you will always receive a screenshot.
 DO NOT use the tool text_editor_20241022 at all. For modifying files, use the tool bash_20241022.
@@ -100,10 +100,10 @@ def remove_image_urls(messages):
         message_copy = message.copy()
         content_copy = []
         for content in message_copy['content']:
-            if content['type'] == 'text':
-                content_copy.append(content)
-            elif content['type'] == 'image':
+            if content['type'] == 'image_url':
                 content_copy.append({'type': 'image', 'source': {'type': 'base64', 'data': '[IMAGE DATA]'}})
+            else:
+                content_copy.append(content)
         message_copy['content'] = content_copy
         messages_copy.append(message_copy)
     return messages_copy
@@ -133,7 +133,7 @@ class ComputerUseAgent:
             observation_type="screenshot_a11y_tree",
             # observation_type can be in ["screenshot", "a11y_tree", "screenshot_a11y_tree", "som"]
             max_trajectory_length=15,
-            max_image_trajectory_length=3,  # New parameter for image history
+            max_image_trajectory_length=2,  # New parameter for image history
             a11y_tree_max_tokens=10000
     ):
         self.platform = platform
@@ -261,6 +261,13 @@ class ComputerUseAgent:
                 ]
             })
 
+            messages.append({
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": f"Executed a translation of your issued tool call: {previous_action}"}
+                ]
+            })
+
         if self.observation_type != "screenshot":
             raise ValueError("Invalid observation_type type: " + self.observation_type)  # 1}}}
 
@@ -305,8 +312,8 @@ class ComputerUseAgent:
             ]
         })
 
-        # with open("messages.json", "w") as f:
-        #     f.write(json.dumps(messages, indent=4))
+        with open("messages.json", "w") as f:
+            f.write(json.dumps(remove_image_urls(messages), indent=4))
 
         # logger.info("PROMPT: %s", messages)
 

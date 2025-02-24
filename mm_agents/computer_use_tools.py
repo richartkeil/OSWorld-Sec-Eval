@@ -11,6 +11,8 @@ def get_script_from_computer_tool(content: dict) -> str:
         key_mapping = {
             "Return": "enter",
             "KP_0": "num0",
+            "Page_Down": "pagedown",
+            "Page_Up": "pageup",
             # Add more key mappings as needed
         }
         key = key_mapping.get(key, key)
