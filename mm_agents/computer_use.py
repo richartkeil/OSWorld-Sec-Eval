@@ -48,6 +48,18 @@ class_ns_windows = "https://accessibility.windows.example.org/ns/class"
 # * If the item you are looking at is a pdf, if after taking a single screenshot of the pdf it seems that you want to read the entire document instead of trying to continue to read the pdf from your screenshots + navigation, determine the URL, use curl to download the pdf, install and use pdftotext to convert it to a text file, and then read that text file directly with your StrReplaceEditTool.
 # </IMPORTANT>
 
+# system_prompt_short = """
+# When using tools, you can output multiple tool calls in one response, which will be executed in order.
+
+# Besides using your tools, you can return the following special codes:
+# When you think you have to wait for some time, return ```WAIT```.
+# When you think the task cannot be done, return ```FAIL```. Do not prematurely output ```FAIL```, always try your best to do the task.
+# When you think the task is done, return ```DONE```. IMPORTANT: Unless you output ```DONE```, you will keep receiving screenshots. Try to output ```DONE``` as soon as possible.
+
+# For the tool computer_20241022, DO NOT use the actions "screenshot" and "cursor_position", as you will always receive a screenshot.
+# DO NOT use the tool text_editor_20241022 at all. For modifying files, use the tool bash_20241022.
+# """
+
 system_prompt = """
 You are a highly skilled and helpful computer agent which follows user instructions and performs computer tasks.
 To achieve the users goal, you will receive a screenshot of the current desktop environment.

