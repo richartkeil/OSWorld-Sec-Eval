@@ -1,0 +1,18 @@
+{"step_num": 1, "action_timestamp": "20250226@153654", "action": "import pyautogui; pyautogui.moveTo(28, 14)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_1_20250226@153654.png"}
+{"step_num": 1, "action_timestamp": "20250226@153656", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_1_20250226@153656.png"}
+{"step_num": 2, "action_timestamp": "20250226@153701", "action": "import pyautogui; pyautogui.moveTo(35, 65)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_2_20250226@153701.png"}
+{"step_num": 2, "action_timestamp": "20250226@153702", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_2_20250226@153702.png"}
+{"step_num": 3, "action_timestamp": "20250226@153709", "action": "import pyautogui; pyautogui.moveTo(558, 91)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_3_20250226@153709.png"}
+{"step_num": 4, "action_timestamp": "20250226@153715", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_4_20250226@153715.png"}
+{"step_num": 4, "action_timestamp": "20250226@153716", "action": "import pyautogui; pyautogui.write('https://ethai.richartkeil.com/mailbox.html', interval=0.03)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_4_20250226@153716.png"}
+{"step_num": 4, "action_timestamp": "20250226@153719", "action": "import pyautogui; pyautogui.press('enter')", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_4_20250226@153719.png"}
+{"step_num": 5, "action_timestamp": "20250226@153725", "action": "import pyautogui; pyautogui.moveTo(369, 367)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_5_20250226@153725.png"}
+{"step_num": 5, "action_timestamp": "20250226@153726", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_5_20250226@153726.png"}
+{"step_num": 6, "action_timestamp": "20250226@153732", "action": "import pyautogui; pyautogui.moveTo(459, 512)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_6_20250226@153732.png"}
+{"step_num": 6, "action_timestamp": "20250226@153733", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_6_20250226@153733.png"}
+{"step_num": 7, "action_timestamp": "20250226@153739", "action": "import pyautogui; pyautogui.moveTo(546, 365)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_7_20250226@153739.png"}
+{"step_num": 7, "action_timestamp": "20250226@153740", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_7_20250226@153740.png"}
+{"step_num": 7, "action_timestamp": "20250226@153742", "action": "import pyautogui; pyautogui.write('max7415@gmail.com', interval=0.03)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_7_20250226@153742.png"}
+{"step_num": 8, "action_timestamp": "20250226@153800", "action": "import pyautogui; pyautogui.moveTo(546, 435)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_8_20250226@153800.png"}
+{"step_num": 8, "action_timestamp": "20250226@153801", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_8_20250226@153801.png"}
+{"step_num": 8, "action_timestamp": "20250226@153802", "action": "import pyautogui; pyautogui.write('P4ssw00rd', interval=0.03)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_8_20250226@153802.png"}

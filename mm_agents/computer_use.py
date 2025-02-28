@@ -30,8 +30,8 @@ value_ns_windows = "https://accessibility.windows.example.org/ns/value"
 class_ns_windows = "https://accessibility.windows.example.org/ns/class"
 # More namespaces defined in OSWorld, please check desktop_env/server/main.py
 
-# ANTRHOPIC PROMPT
-#
+# System Prompt used by Anthropic in the reference implementation:
+
 # <SYSTEM_CAPABILITY>
 # * You are utilising an Ubuntu virtual machine using aarch64 architecture with internet access.
 # * You can feel free to install Ubuntu applications with your bash tool. Use curl instead of wget.
@@ -42,20 +42,22 @@ class_ns_windows = "https://accessibility.windows.example.org/ns/class"
 # * When using your computer function calls, they take a while to run and send back to you.  Where possible/feasible, try to chain multiple of these calls all into one function calls request.
 # * The current date is Wednesday, October 23, 2024.
 # </SYSTEM_CAPABILITY>
-
+#
 # <IMPORTANT>
 # * When using Firefox, if a startup wizard appears, IGNORE IT.  Do not even click "skip this step".  Instead, click on the address bar where it says "Search or enter address", and enter the appropriate search term or URL there.
 # * If the item you are looking at is a pdf, if after taking a single screenshot of the pdf it seems that you want to read the entire document instead of trying to continue to read the pdf from your screenshots + navigation, determine the URL, use curl to download the pdf, install and use pdftotext to convert it to a text file, and then read that text file directly with your StrReplaceEditTool.
 # </IMPORTANT>
 
+# Shortened system prompt:
+
 # system_prompt_short = """
 # When using tools, you can output multiple tool calls in one response, which will be executed in order.
-
+#
 # Besides using your tools, you can return the following special codes:
 # When you think you have to wait for some time, return ```WAIT```.
 # When you think the task cannot be done, return ```FAIL```. Do not prematurely output ```FAIL```, always try your best to do the task.
 # When you think the task is done, return ```DONE```. IMPORTANT: Unless you output ```DONE```, you will keep receiving screenshots. Try to output ```DONE``` as soon as possible.
-
+#
 # For the tool computer_20241022, DO NOT use the actions "screenshot" and "cursor_position", as you will always receive a screenshot.
 # DO NOT use the tool text_editor_20241022 at all. For modifying files, use the tool bash_20241022.
 # """
@@ -137,39 +139,26 @@ class ComputerUseAgent:
     def __init__(
             self,
             platform="ubuntu",
-            model="gpt-4-vision-preview",
+            model="claude-3-5-sonnet-20241022",
             max_tokens=1500,
-            top_p=0.9,
-            temperature=0.5,
-            action_space="computer_13",
-            observation_type="screenshot_a11y_tree",
-            # observation_type can be in ["screenshot", "a11y_tree", "screenshot_a11y_tree", "som"]
+            temperature=1.0, # Anthropic Default
             max_trajectory_length=15,
             max_image_trajectory_length=2,  # New parameter for image history
-            a11y_tree_max_tokens=10000
+            message_path="messages.json"
     ):
         self.platform = platform
         self.model = model
         self.max_tokens = max_tokens
-        self.top_p = top_p
         self.temperature = temperature
-        self.action_space = action_space
-        self.observation_type = observation_type
         self.max_trajectory_length = max_trajectory_length
         self.max_image_trajectory_length = max_image_trajectory_length  # Store new parameter
-        self.a11y_tree_max_tokens = a11y_tree_max_tokens
+        self.message_path = message_path
 
         self.thoughts = []
         self.actions = []
         self.observations = []
 
-        if observation_type == "screenshot":
-            if action_space == "pyautogui":
-                self.system_message = system_prompt
-            else:
-                raise ValueError("Invalid action space: " + action_space)
-        else:
-            raise ValueError("Invalid experiment type: " + observation_type)
+        self.system_message = system_prompt
 
     def predict(self, instruction: str, obs: Dict) -> List:
         """
@@ -212,8 +201,6 @@ class ComputerUseAgent:
         # Calculate which entries should show full screenshots vs placeholders
         current_position = len(self.observations)
         for i, (previous_obs, previous_action, previous_thought) in enumerate(zip(_observations, _actions, _thoughts)):
-            if self.observation_type != "screenshot":
-                raise ValueError("Invalid observation_type type: " + self.observation_type)
 
             _screenshot = previous_obs["screenshot"]
             _shell_output = previous_obs["shell_output"]
@@ -280,9 +267,6 @@ class ComputerUseAgent:
                 ]
             })
 
-        if self.observation_type != "screenshot":
-            raise ValueError("Invalid observation_type type: " + self.observation_type)  # 1}}}
-
         _shell_output = obs["shell_output"]
         _shell_exit_code = obs["shell_exit_code"]
         if _shell_exit_code is not None:
@@ -324,17 +308,14 @@ class ComputerUseAgent:
             ]
         })
 
-        with open("messages.json", "w") as f:
+        with open(self.message_path, "w") as f:
             f.write(json.dumps(remove_image_urls(messages), indent=4))
-
-        # logger.info("PROMPT: %s", messages)
 
         try:
             response = self.call_llm({
                 "model": self.model,
                 "messages": messages,
                 "max_tokens": self.max_tokens,
-                "top_p": self.top_p,
                 "temperature": self.temperature
             })
         except Exception as e:
@@ -385,12 +366,8 @@ class ComputerUseAgent:
         max_tries=10
     )
     def call_llm(self, payload):
-        if not self.model.startswith("claude"):
-            raise ValueError("Invalid model: " + self.model)
-        
         messages = payload["messages"]
         max_tokens = payload["max_tokens"]
-        top_p = payload["top_p"]
         temperature = payload["temperature"]
 
         claude_messages = []
@@ -435,7 +412,6 @@ class ComputerUseAgent:
             "max_tokens": max_tokens,
             "messages": claude_messages,
             "temperature": temperature,
-            "top_p": top_p,
             "tools": claude_tools
         }
 

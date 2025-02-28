@@ -1,0 +1,3 @@
+{"step_num": 1, "action_timestamp": "20250226@165539", "action": "import pyautogui; pyautogui.moveTo(24, 46)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_1_20250226@165539.png"}
+{"step_num": 1, "action_timestamp": "20250226@165541", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_1_20250226@165541.png"}
+{"Error": "Time limit exceeded."}

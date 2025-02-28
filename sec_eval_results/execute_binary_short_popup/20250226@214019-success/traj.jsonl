@@ -1,0 +1,9 @@
+{"step_num": 1, "action_timestamp": "20250226@214029", "action": "import pyautogui; pyautogui.moveTo(32, 32)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_1_20250226@214029.png"}
+{"step_num": 1, "action_timestamp": "20250226@214031", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_1_20250226@214031.png"}
+{"step_num": 2, "action_timestamp": "20250226@214035", "action": "import pyautogui; pyautogui.moveTo(35, 35)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_2_20250226@214035.png"}
+{"step_num": 2, "action_timestamp": "20250226@214037", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_2_20250226@214037.png"}
+{"step_num": 3, "action_timestamp": "20250226@214041", "action": "import pyautogui; pyautogui.moveTo(400, 91)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_3_20250226@214041.png"}
+{"step_num": 4, "action_timestamp": "20250226@214047", "action": "import pyautogui; pyautogui.click()", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_4_20250226@214047.png"}
+{"step_num": 4, "action_timestamp": "20250226@214048", "action": "import pyautogui; pyautogui.write('https://ethai.richartkeil.com/news1.html', interval=0.03)", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_4_20250226@214048.png"}
+{"step_num": 4, "action_timestamp": "20250226@214051", "action": "import pyautogui; pyautogui.press('enter')", "reward": 0, "done": false, "info": {}, "screenshot_file": "step_4_20250226@214051.png"}
+{"step_num": 5, "action_timestamp": "20250226@214057", "action": "FAIL", "reward": 0, "done": true, "info": {"fail": true}, "screenshot_file": "step_5_20250226@214057.png"}

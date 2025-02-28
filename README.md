@@ -1,3 +1,20 @@
+# OSWorld — Extension "Benchmarking Vulnerabilities in LLM-Based Computer-Use Agents"
+
+This is a fork of the original [xlang-ai/OSWorld](https://github.com/xlang-ai/OSWorld) repository, used to test security vulnerabilities for the term paper "Benchmarking Vulnerabilities in LLM-based Computer-Use Agents".
+
+You can find the results used in our paper in `./sec_eval_results`.
+
+## Setup
+
+- run `poetry install`
+- start the local webserver in `sec_eval/webserver` by simply running `./serve.py`
+- create a tunnel so that the local server is accessible through a public domain (this prevents the agent from getting distracted by localhost URLs)
+- create a `.env` based on `.env.example` with your Anthropic API key
+- run the three scenarios using `poetry run python run_sec_eval.py`
+
+
+# Original Readme
+
 <p align="center">
   <img src="https://huggingface.co/datasets/xlangai/assets/resolve/main/github_banner_v2.png" alt="Banner">
 </p>
