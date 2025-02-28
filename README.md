@@ -9,6 +9,7 @@ You can find the results used in our paper in `./sec_eval_results`.
 - run `poetry install`
 - start the local webserver in `sec_eval/webserver` by simply running `./serve.py`
 - create a tunnel so that the local server is accessible through a public domain (this prevents the agent from getting distracted by localhost URLs)
+- update the scenario instructions in `sec_eval` with the corresponding URL
 - create a `.env` based on `.env.example` with your Anthropic API key
 - run the three scenarios using `poetry run python run_sec_eval.py`
 
